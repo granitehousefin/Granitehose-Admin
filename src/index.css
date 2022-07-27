@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fff;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+label {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.ant-picker {
+  border: none !important;
+}
+.ant-input {
+  border: none !important;
+}
+.ant-input:focus {
+  box-shadow: none !important;
+}
+
+.ant-picker-focused {
+  box-shadow: none !important;
+}
+.ant-picker:hover,
+.ant-picker-focused {
+  border: none !important;
+}
+.ant-form-item-explain-error {
+  text-align: left;
+}
+.ant-input-number {
+  width: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.ant-btn{
+  height: 40px;
+}
+/* .ant-form-item-control-input {
+  display: flex;
+  border-radius: 0.375rem;
+  padding: 8px;
+  border: 1px solid #e8ecf4;
+  transition: ease-in duration-300;
+}
+.ant-form-item-control-input:hover {
+  transition: ease-out;
+  border: 1px solid #060b27;
+} */
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.ant-btn-primary {
+  background: #060b27 !important;
+  border: none !important;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 0.375rem;
+  transition: ease-in duration-300;
+}
