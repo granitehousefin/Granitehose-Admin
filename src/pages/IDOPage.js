@@ -260,7 +260,7 @@ function IDOPage(props) {
                               ICOData.vestingCounter
                             )}
                             {moment(parseInt(lokingPeriodTime * 1000)).format(
-                              'MMMM Do YYYY, h:mm:ss a'
+                              "MMMM Do YYYY, h:mm:ss a"
                             )}
                           </span>
                         </div>{" "}
@@ -280,12 +280,16 @@ function IDOPage(props) {
               <>
                 {props.walletAddress == "" ? (
                   <>
-                    <h1 className="font-bold text-xl mb-[30px] mt-[20px]">Please Connect Wallet</h1>
+                    <h1 className="font-bold text-xl mb-[30px] mt-[20px]">
+                      Please Connect Wallet
+                    </h1>
                   </>
                 ) : (
                   <>
                     {" "}
-                    <h1>Caller is not the owner</h1>
+                    <h1 className="font-bold text-xl mb-[30px] mt-[20px]">
+                      Caller is not the owner
+                    </h1>
                   </>
                 )}
               </>

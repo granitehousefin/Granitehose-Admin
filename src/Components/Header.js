@@ -155,8 +155,8 @@ function Header(props) {
                     <div
                       onClick={async () => {
                         UpdateConnectLoading(true);
-                        await ConnectMetamask().then(() => {
-                          setisConnect(true);
+                        await ConnectMetamask().then((res) => {
+                          setisConnect(res);
                           handleCloseConnectModal();
                         });
                       }}
