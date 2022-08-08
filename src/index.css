@@ -42,7 +42,7 @@ label {
   border: none !important;
   box-shadow: none !important;
 }
-.ant-btn{
+.ant-btn {
   height: 40px;
 }
 /* .ant-form-item-control-input {
@@ -62,9 +62,9 @@ label {
 }
 
 .ant-btn-primary {
-  background: #060b27 !important;
+  background: #ffce33 !important;
   border: none !important;
-  color: #fff;
+  color: #000 !important;
   font-weight: 600;
   font-size: 14px;
   padding: 10px 20px;

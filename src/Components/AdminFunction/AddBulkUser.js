@@ -12,10 +12,11 @@ function CSVUpload(props) {
   const [isUploded, setUploded] = useState(false);
   const [AddressWhitelist, setAddressWhitelist] = useState([]);
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", }}
-    >
-      <h3 className="text-center font-semibold mb-[10px]"> Add Whitelist User</h3>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h3 className="text-center font-semibold mb-[10px]">
+        {" "}
+        Add Whitelist User
+      </h3>
       <form
         class="form-inline"
         onSubmit={async (e) => {
@@ -79,16 +80,17 @@ function CSVUpload(props) {
           <button
             style={{
               padding: " 0.375rem 0.75rem",
-              fontSize: "0.8rem",
+              height: "42px",
+              fontSize: "16px",
               lineHeight: "1.5",
               borderRadius: "0.25rem",
-              color: "#fff",
+              color: "#000",
               outline: "none",
               border: "none",
               margin: "20px 0",
               cursor: "pointer",
               transition: "all 0.3s cubic-bezier(0.645,0.045,0.355,1)",
-              background: "#000",
+              background: "#FFCE33",
               borderColor: "#faa059ad",
             }}
             type="submit"
@@ -103,11 +105,17 @@ function CSVUpload(props) {
               }
             }}
           >
-            Upload File
+            Add Whitelist User
           </button>
         </div>
       </form>
-      <a href={process.env.PUBLIC_URL+"assets/Testing.csv"} download>Download Sample File</a>
+      <a
+        className="mb-[30px]"
+        href={process.env.PUBLIC_URL + "assets/Testing.csv"}
+        download
+      >
+        Download Sample File
+      </a>
     </div>
   );
 }

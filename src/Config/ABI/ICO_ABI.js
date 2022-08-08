@@ -2,6 +2,19 @@ export const ICO_ABI = [
   {
     inputs: [
       {
+        internalType: "address[]",
+        name: "_addressToWhitelist",
+        type: "address[]",
+      },
+    ],
+    name: "addBulkUsers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "_busdContract",
         type: "address",
@@ -85,6 +98,35 @@ export const ICO_ABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_tokenAddr",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_toWallet",
+        type: "address",
+      },
+    ],
+    name: "retrieveStuckedERC20Token",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_roomQuantity",
         type: "uint256",
@@ -102,6 +144,83 @@ export const ICO_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_aMonth",
+        type: "uint256",
+      },
+    ],
+    name: "setAmonth",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_startTime",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_endTime",
+        type: "uint256",
+      },
+    ],
+    name: "setICOTime",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_lokingPeriodTime",
+        type: "uint256",
+      },
+    ],
+    name: "setLockingPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_presaleRate",
+        type: "uint256",
+      },
+    ],
+    name: "setPresaleRate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "setSaleStatus",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_tokenContract",
+        type: "address",
+      },
+    ],
+    name: "setTokenContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "Vesting",
     outputs: [
@@ -112,19 +231,6 @@ export const ICO_ABI = [
       },
     ],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "aMonth",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -154,16 +260,16 @@ export const ICO_ABI = [
     type: "function",
   },
   {
-    inputs: [
+    inputs: [],
+    name: "aMonth",
+    outputs: [
       {
-        internalType: "address[]",
-        name: "_addressToWhitelist",
-        type: "address[]",
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
-    name: "addBulkUsers",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -254,24 +360,8 @@ export const ICO_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_tokenAddr",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_toWallet",
-        type: "address",
-      },
-    ],
-    name: "retrieveStuckedERC20Token",
+    inputs: [],
+    name: "saleStatus",
     outputs: [
       {
         internalType: "bool",
@@ -279,77 +369,7 @@ export const ICO_ABI = [
         type: "bool",
       },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_aMonth",
-        type: "uint256",
-      },
-    ],
-    name: "setAmonth",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_startTime",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_endTime",
-        type: "uint256",
-      },
-    ],
-    name: "setICOTime",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_lokingPeriodTime",
-        type: "uint256",
-      },
-    ],
-    name: "setLockingPeriod",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_presaleRate",
-        type: "uint256",
-      },
-    ],
-    name: "setPresaleRate",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_tokenContract",
-        type: "address",
-      },
-    ],
-    name: "setTokenContract",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {

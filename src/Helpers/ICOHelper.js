@@ -4,7 +4,7 @@ import { BUSDToken, GraniteToken } from "../Config/Contract/Contract";
 import { ICOContractaddress } from "../Config/Contract/Contract";
 import { store } from "../Redux/store";
 import { web3_ } from "../Services";
-import { GraniteABI} from "../Config/ABI/VaultyABI";
+import { GraniteABI } from "../Config/ABI/VaultyABI";
 
 export const ICOHelperContract = async (address) => {
   return new web3_.eth.Contract(ICO_ABI, address);
@@ -23,12 +23,12 @@ export const ICOHelperGetTokenomics = async (address) => {
 
 export const ICOHelperGetBalance = async (address) => {
   console.log(address);
-  return await new web3_.eth.Contract(BUSDTokenABI, BUSDToken).methods
+  return await new web3_.eth.Contract(BUSDTokenABI, GraniteToken).methods
     .balanceOf(address)
     .call();
 };
 
-export const ICOHelperGetBalancebusd= async (address) => {
+export const ICOHelperGetBalancebusd = async (address) => {
   console.log(address);
   return await new web3_.eth.Contract(BUSDTokenABI, BUSDToken).methods
     .balanceOf(address)
@@ -41,8 +41,6 @@ export const ICOHelperGetBalanceValty = async (address) => {
     .call();
 };
 
-
-
 export const ICOHelperGetOwner = async (address) => {
   console.log(address, "Owner account");
   return await new web3_.eth.Contract(ICO_ABI, ICOContractaddress).methods
@@ -50,8 +48,20 @@ export const ICOHelperGetOwner = async (address) => {
     .call();
 };
 
-export const ICOHelperVestingCounter = async()=>{
-    return await new web3_.eth.Contract(ICO_ABI, ICOContractaddress).methods
-      .vestingCounter()
-      .call();
-}
+export const ICOHelperVestingCounter = async () => {
+  return await new web3_.eth.Contract(ICO_ABI, ICOContractaddress).methods
+    .vestingCounter()
+    .call();
+};
+
+export const ICOHelperLokingpriod = async () => {
+  return await new web3_.eth.Contract(ICO_ABI, ICOContractaddress).methods
+    .lokingPeriodTime()
+    .call();
+};
+
+export const ICOHelperAmonth = async () => {
+  return await new web3_.eth.Contract(ICO_ABI, ICOContractaddress).methods
+    .aMonth()
+    .call();
+};

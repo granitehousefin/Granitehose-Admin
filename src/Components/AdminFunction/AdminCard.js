@@ -9,6 +9,9 @@ import {
   ICOHelperGetBalance,
   ICOHelperGetOwner,
   ICOHelperGetBalanceValty,
+  ICOHelperLokingpriod,
+  ICOHelperVestingCounter,
+  ICOHelperAmonth,
 } from "../../Helpers/ICOHelper";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
@@ -17,6 +20,7 @@ import { store } from "../../Redux/store";
 import moment from "moment";
 import { BUSDTokenABI } from "../../Config/ABI/BUSDTokenABI";
 import { ICOContractaddress } from "../../Config/Contract/Contract";
+
 const mapStateToProps = (state) => ({
   isConnect: state.ConnectWallet.isConnect,
 });
@@ -196,7 +200,7 @@ function AdminCard(props) {
             return 0;
           });
 
-          console.log(BalanceOf);
+        console.log(BalanceOf);
 
         Methods.send({ from: store.getState().ConnectWallet.address })
           .on("transactionHash", function (transactionHash) {
@@ -264,54 +268,189 @@ function AdminCard(props) {
       }
       //set
       else if (funName === "Vesting") {
+        // var element = document.getElementById("time").value;
         let balance = await ICOHelperGetBalance(props.address);
+        let lokingTime = await ICOHelperLokingpriod(props.address);
+        let graniteVlt = await ICOHelperGetBalanceValty(props.address);
+        let Mothtime = await ICOHelperAmonth(props.address);
 
-        let balanceVlt = await ICOHelperGetBalanceValty(props.address);
-        // alert(balanceVlt/Math.pow(10,9))
         let investor = await ICOHelperGetTokenomics(props.address);
-        console.log(investor[5] / Math.pow(10, 9));
-        console.log("inverstor amount", investor);
-        // console.log(Math.floor(new Date().getTime() / 1000.0));
-        // alert(balance/Math.pow(10,18));
-        // alert(investor[5]/Math.pow(10,9));
+        let vestingCounter = await ICOHelperVestingCounter();
+        // alert(Mothtime, "this is the interval vesting time");
 
-        console.log(Math.floor(new Date().getTime() / 1000.0) > investor[4]);
-        if (
-          Math.floor(new Date().getTime() / 1000.0) < Math.floor(investor[4])
-        ) {
-          UpdateConnectLoading(false);
-          Swal.fire(
-            "Warning!",
-            "Sale is not Ended. Wait for it",
-            "warning"
-          );
-        } else if (
-          investor[5] / Math.pow(10, 9) >=
-          balanceVlt / Math.pow(10, 9)
-        ) {
-          Swal.fire("Unsufficent  Fund In ICO", "", "error");
-        } else if (
-          investor[6] / Math.pow(10, 18) >=
-          balance / Math.pow(10, 18)
-        ) {
-          Swal.fire("Unsufficent Granite Fund In ICO", "", "error");
+        console.log(investor[5] / Math.pow(10, 9));
+        console.log(investor[4], "kgdbrbnnbnf");
+        console.log(graniteVlt, "balance of granite");
+        console.log("inverstor amount", investor);
+        // Checking Vesting Counter
+        if (vestingCounter != 12) {
+          // Check Sale Status
+          if (
+            Math.floor(new Date().getTime() / 1000.0) > Math.floor(investor[4])
+          ) {
+            // Locking period Check
+            if (
+              new Date().getTime() / 1000 >
+              parseInt(investor[4]) + parseInt(lokingTime)
+            ) {
+              // Check Fund of ICO
+              console.log(
+                parseInt(investor[4]) +
+                  parseInt(lokingTime) +
+                  parseInt(vestingCounter) * parseInt(Mothtime)
+              );
+              if (
+                parseInt(investor[4]) +
+                  parseInt(lokingTime) +
+                  parseInt(vestingCounter) * parseInt(Mothtime) <
+                new Date().getTime() / 1000
+              ) {
+                console.log(
+                  (parseInt(investor[5]) * 0.05) / Math.pow(10, 18),
+                  parseInt(balance) / Math.pow(10, 18),
+                  props.address
+                );
+                if (
+                  (parseInt(investor[5]) * 0.05) / Math.pow(10, 18) <=
+                  parseInt(balance) / Math.pow(10, 18)
+                ) {
+                  Methods.send({
+                    from: store.getState().ConnectWallet.address,
+                  })
+                    .on("transactionHash", function (transactionHash) {
+                      console.log(transactionHash);
+                    })
+                    .on("confirmation", () => {})
+                    // get New Contract Address
+                    .then((newContractInstance) => {
+                      UpdateConnectLoading(false);
+                    })
+                    .catch((err) => {
+                      UpdateConnectLoading(false);
+                    });
+                } else {
+                  Swal.fire("Insufficent Granite Fund In ICO", "", "error");
+                }
+              } else {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Next Vesting Can  Start After One Month",
+                });
+              }
+            } else {
+              Swal.fire(
+                "First Vesting Can Be Start After Locking Period",
+                "",
+                "error"
+              );
+            }
+          } else {
+            UpdateConnectLoading(false);
+            Swal.fire("Warning!", "Sale Is Not Ended. Wait For It", "warning");
+          }
+
+          // // old Code
+          // if (
+          //   Math.floor(new Date().getTime() / 1000.0) < Math.floor(investor[4])
+          // ) {
+          //   UpdateConnectLoading(false);
+          //   Swal.fire("Warning!", "Sale is not Ended. Wait for it", "warning");
+          // } else if (
+          //   new Date().getTime() / 1000 <
+          //   parseInt(investor[4]) + parseInt(lokingTime)
+          // ) {
+          //   //31536000)
+          //   Swal.fire(
+          //     "First Vesting Can be start after locking period",
+          //     "",
+          //     "error"
+          //   );
+          // } else if (60 - parseInt(vestingCounter) * 5 != 0) {
+          //   if (
+          //     (parseInt(investor[6]) * 0.05) / Math.pow(10, 18) >
+          //     parseInt(balance) / Math.pow(10, 18)
+          //   ) {
+          //     Swal.fire("Unsufficent Granite Fund In ICO", "", "error");
+          //   } else {
+          //     if (
+          //       parseInt(investor[5]) / Math.pow(10, 18) <=
+          //       parseInt(graniteVlt) / Math.pow(10, 18)
+          //     ) {
+          //       UpdateConnectLoading(true);
+          //       Methods.send({
+          //         from: store.getState().ConnectWallet.address,
+          //       })
+          //         .on("transactionHash", function (transactionHash) {
+          //           console.log(transactionHash);
+          //         })
+          //         .on("confirmation", () => {})
+          //         // get New Contract Address
+          //         .then((newContractInstance) => {
+          //           UpdateConnectLoading(false);
+          //         })
+          //         .catch((err) => {
+          //           UpdateConnectLoading(false);
+          //         });
+          //     } else {
+          //       Swal.fire("Insufficent Token on ICO", "", "error");
+          //     }
+          //   }
+          //   // } else if (
+          //   //   parseInt(investor[4]) +
+          //   //     parseInt(lokingTime) +
+          //   //     parseInt(vestingCounter) * parseInt(Mothtime) <=
+          //   //   new Date().getTime() / 1000
+          //   // ) {
+          //   //   Swal.fire({
+          //   //     icon: "warning",
+          //   //     title: "Next Vesting Can  Start After One Month",
+          //   //   });
+          //   // } else {
+          //   if (
+          //     (parseInt(investor[6]) * 0.05) / Math.pow(10, 18) >
+          //     parseInt(balance) / Math.pow(10, 18)
+          //   ) {
+          //     Swal.fire("Unsufficent Granite Fund In ICO", "", "error");
+          //   } else {
+          //     if (
+          //       parseInt(investor[5]) / Math.pow(10, 18) >=
+          //       parseInt(graniteVlt) / Math.pow(10, 18)
+          //     ) {
+          //       UpdateConnectLoading(true);
+          //       Methods.send({
+          //         from: store.getState().ConnectWallet.address,
+          //       })
+          //         .on("transactionHash", function (transactionHash) {
+          //           console.log(transactionHash);
+          //         })
+          //         .on("confirmation", () => {})
+          //         // get New Contract Address
+          //         .then((newContractInstance) => {
+          //           UpdateConnectLoading(false);
+          //         })
+          //         .catch((err) => {
+          //           UpdateConnectLoading(false);
+          //         });
+          //     } else {
+          //       Swal.fire("Insufficent  Fund In ICO", "", "error");
+          //     }
+          //   }
+          // }
+          // }
         } else {
-          UpdateConnectLoading(true);
-          Methods.send({
-            from: store.getState().ConnectWallet.address,
-          })
-            .on("transactionHash", function (transactionHash) {
-              console.log(transactionHash);
-            })
-            .on("confirmation", () => {})
-            // get New Contract Address
-            .then((newContractInstance) => {
-              UpdateConnectLoading(false);
-            })
-            .catch((err) => {
-              UpdateConnectLoading(false);
-            });
+          Swal.fire({
+            icon: "warning",
+            title: "All Vesting Round Completed",
+          });
         }
+        // if (
+        //   parseInt(investor[4]) +
+        //     parseInt(lokingTime) +
+        //     parseInt(vestingCounter) * parseInt(Mothtime) <=
+        //   new Date().getTime() / 1000
+        // ) {
+        //   Swal.fire("Vesting can start one month", "", "error");
+        // }
       }
     } else {
       Swal.fire({
@@ -332,7 +471,6 @@ function AdminCard(props) {
   };
   console.log(props.funName);
   return (
-    
     <div class="mb-[30px] " style={{ marginBottom: "30px" }}>
       <h3 class="text-center font-semibold mb-[10px]">{props.data.name}</h3>
       <Form
@@ -341,7 +479,6 @@ function AdminCard(props) {
         onFinish={(values) => onFinish(values, props.funName)}
       >
         <div class="flex flex-col">
-         
           {props.data.inputs.map((item, index) => {
             if (item.type === "date") {
               return (
@@ -415,12 +552,7 @@ function AdminCard(props) {
             }
           })}
         </div>
-        {/* <button
-          type="submit"
-          class="px-[16px] py-[8px] bg-[#060b27] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20"
-        >
-          Submit
-        </button> */}
+
         <Form.Item>
           <Button
             type="primary"
@@ -431,14 +563,15 @@ function AdminCard(props) {
             Submit
           </Button>
         </Form.Item>
+        {/* SetTimestatus */}
+        {/* <div>
+          <TimeStatus />
+        </div> */}
+        {/* Close Stattus */}
       </Form>
 
-      
-     
       {/* <button onClick={handleClick}> starttime</button> */}
     </div>
-
-    
   );
 }
 

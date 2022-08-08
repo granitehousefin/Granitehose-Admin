@@ -39,6 +39,7 @@ function IDOPage(props) {
     isSaleEnded: false,
     vestingCounter: 0,
     lokingPeriodTime: 0,
+
     aMonth: 0,
   });
   console.log(props);
@@ -62,7 +63,7 @@ function IDOPage(props) {
           UpdateConnectLoading(false);
           setICOData((value) => ({
             ...value,
-            PresaleRate: result[0],
+            PresaleRate: result[2],
             startTime: result[3],
             endTime: parseInt(result[4]),
           }));
@@ -119,7 +120,7 @@ function IDOPage(props) {
         UpdateConnectLoading(false);
         setICOData((value) => ({
           ...value,
-          PresaleRate: result[0],
+          PresaleRate: result[2],
           startTime: result[3],
           endTime: result[4],
         }));
@@ -216,14 +217,12 @@ function IDOPage(props) {
     ICOData.endTime +
     ICOData.lokingPeriodTime +
     ICOData.vestingCounter * ICOData.aMonth;
+
   return (
     <main className="" style={{ height: "100vh" }}>
       <div style={{ height: "100%" }}>
-        {props.walletAddress === undefined ? (
-          <>Yess</>
-        ) : (
-          <>
-            {owner &&
+        <>
+          {props.isConnect ? (
             owner.toLowerCase() === props.walletAddress.toLowerCase() ? (
               <>
                 <div className="hidden md:block"></div>
@@ -250,26 +249,43 @@ function IDOPage(props) {
                           Vesting Counter :{" "}
                           <span>{ICOData.vestingCounter}</span>
                         </div>
-                        <div className="my-10">
-                          Vesting will start :{" "}
-                          <span>
-                            {console.log(
-                              ICOData.endTime,
-                              ICOData.lokingPeriodTime,
-                              ICOData.aMonth,
-                              ICOData.vestingCounter
-                            )}
-                            {moment(parseInt(lokingPeriodTime * 1000)).format(
-                              "MMMM Do YYYY, h:mm:ss a"
-                            )}
-                          </span>
-                        </div>{" "}
+                        {ICOData.vestingCounter == 12 ? (
+                          <div>Vesting has done.</div>
+                        ) : (
+                          <>
+                            {" "}
+                            <div className="my-10">
+                              Vesting will start :{" "}
+                              <span>
+                                {console.log(
+                                  ICOData.endTime,
+                                  ICOData.lokingPeriodTime,
+                                  ICOData.aMonth,
+                                  ICOData.vestingCounter
+                                  // parseInt(investor[4]) +
+                                  // parseInt(lokingTime) +
+                                  // parseInt(vestingCounter)
+                                )}
+                                {moment(
+                                  parseInt(lokingPeriodTime * 1000)
+                                ).format("MMMM Do YYYY, h:mm:ss a")}
+                              </span>
+                            </div>
+                          </>
+                        )}
+
                         <div>
                           Vesting Percentage :{" "}
                           <span>
                             {ICOData.vestingCounter < 11 ? "5%" : "45%"}
                           </span>
                         </div>
+                        {/* <div>
+                         Presale Rate :{" "}
+                         <span>
+                           {ICOData.PresaleRate / Math.pow(10, 18)} BUSD/GRNT
+                         </span>
+                       </div> */}
                       </div>
                     </div>
                     <div></div>
@@ -277,25 +293,42 @@ function IDOPage(props) {
                 </div>
               </>
             ) : (
-              <>
-                {props.walletAddress == "" ? (
-                  <>
-                    <h1 className="font-bold text-xl mb-[30px] mt-[20px]">
+              <h1 className="font-bold text-xl mb-[30px] mt-[100px]">
+                Caller is not the owner
+              </h1>
+            )
+          ) : (
+            <div className="">
+              <h1 className="font-bold text-xl mb-[30px] mt-[100px]">
+                Please Connect Wallet
+              </h1>
+            </div>
+          )}
+        </>
+        {/* {
+          // owner &&
+          props.isConnect &&
+          owner.toLowerCase() === props.walletAddress.toLowerCase() ? (
+            
+          ) : (
+            <>
+              {props.walletAddress == "" ? (
+                <>
+                  <div className="">
+                    <h1 className="font-bold text-xl mb-[30px] mt-[100px]">
                       Please Connect Wallet
                     </h1>
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <h1 className="font-bold text-xl mb-[30px] mt-[20px]">
-                      Caller is not the owner
-                    </h1>
-                  </>
-                )}
-              </>
-            )}
-          </>
-        )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {" "}
+                 
+                </>
+              )}
+            </>
+          )
+        } */}
       </div>
     </main>
   );

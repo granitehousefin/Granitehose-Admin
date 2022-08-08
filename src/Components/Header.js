@@ -6,12 +6,14 @@ import {
   ConnectWeb3Wallet,
   DisconnectWallet,
 } from "../Services";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 import { store } from "../Redux/store";
 import { spliceString } from "../Helpers/utils";
 import { GetBUSDBalanceHelper } from "../Helpers/BUSDToken";
 import { connect, useDispatch } from "react-redux";
 import { UpdateConnectLoading, UpdateWalletBalance } from "../Redux/Action";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { GiExitDoor, GiHamburgerMenu } from "react-icons/gi";
 const mapStateToProps = (state) => ({
   address: state.ConnectWallet.address,
   _isConnectModalOpen: state.Modal.isConnectModalOpen,
@@ -22,6 +24,11 @@ function Header(props) {
     props._isConnectModalOpen
   );
 
+  useEffect(() => {
+    tippy("#exitdoor", {
+      content: "Logout",
+    });
+  }, []);
   useEffect(() => {
     setisConnetModalOpen(props._isConnectModalOpen);
   }, [props._isConnectModalOpen]);
@@ -42,6 +49,7 @@ function Header(props) {
     setisConnect(false);
     DisconnectWallet();
     store.getState().ConnectWallet.address = "";
+    store.getState().ConnectWallet.isConnect = false;
   }
   function handleBurger() {
     setisBurger(!isBurger);
@@ -80,7 +88,7 @@ function Header(props) {
         {/* //Connect Wallet and Address  */}
         {isConnect && (
           <div className="group ">
-            <div className="hidden md:flex  gap-3 px-[16px] py-[8px] bg-[#060b27] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20">
+            <div className="hidden md:flex  gap-3 px-[16px] py-[8px] bg-[#ffce33] rounded-md text-black cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20">
               <span>
                 <IoWallet size={20} />
               </span>{" "}
@@ -107,6 +115,7 @@ function Header(props) {
                     "login",
                     JSON.stringify({ value: false })
                   );
+                  handleWalletDisconnect();
                   navigate("/auth", { replace: true });
                 }}
               >
@@ -119,14 +128,27 @@ function Header(props) {
           </div>
         )}
         {!isConnect && (
-          <div
-            onClick={handleOpenConnectModal}
-            className="hidden md:block px-[16px] py-[8px] bg-[#FFCE33] rounded-md text-black cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20"
-          >
-            Connect Wallet
+          <div className="flex items-center gap-5">
+            <div
+              onClick={handleOpenConnectModal}
+              className="hidden md:block px-[16px] py-[8px] bg-[#FFCE33] rounded-md text-black cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20"
+            >
+              Connect Wallet
+            </div>
+            <div
+              id="exitdoor"
+              onClick={() => {
+                localStorage.setItem("login", JSON.stringify({ value: false }));
+                localStorage.removeItem("WalletConnect");
+                navigate("/auth", { replace: true });
+              }}
+              className="cursor-pointer inline-block"
+            >
+              <GiExitDoor size={28} color="white" />
+            </div>
           </div>
         )}
-        <div className="block md:hidden" onClick={handleBurger}>
+        <div className="block md:hidden inline-block" onClick={handleBurger}>
           <GiHamburgerMenu size={30} color="#fff" />
         </div>
       </div>{" "}
@@ -147,8 +169,8 @@ function Header(props) {
               </div>
               <div className="shadow-xl shadow-[#060b27]/20">
                 {" "}
-                <div className="rounded-tl-lg rounded-tr-lg  py-[25px] bg-[#060b27]">
-                  <h3 className=" text-white text-2xl m-0">Connect Wallet</h3>
+                <div className="rounded-tl-lg rounded-tr-lg  py-[25px] bg-[#FFCE33]">
+                  <h3 className=" text-black text-2xl m-0">Connect Wallet</h3>
                 </div>
                 <div className="">
                   <div className=" flex flex-col gap-5 font-semibold text-xl  bg-[#fff] p-[16px] pb-[32px]  rounded-lg">
@@ -171,7 +193,7 @@ function Header(props) {
                       </span>
                       <span className="ml-3">Metamask</span>
                     </div>
-                    <div
+                    {/* <div
                       onClick={() => {
                         UpdateConnectLoading(true);
                         ConnectWeb3Wallet().then(async () => {
@@ -192,7 +214,7 @@ function Header(props) {
                         ></img>
                       </span>
                       <span className="ml-3">Wallet Connect</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -225,7 +247,7 @@ function Header(props) {
                     setisBurger(false);
                     handleOpenConnectModal();
                   }}
-                  className="  px-[16px] py-[8px] bg-[#060b27] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20"
+                  className="  px-[16px] py-[8px] bg-[#FFCE33] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20"
                 >
                   Connect Wallet
                 </div>
@@ -235,7 +257,7 @@ function Header(props) {
               {" "}
               {isConnect && (
                 <div className="group ">
-                  <div className="   flex gap-3 px-[16px] py-[8px] bg-[#060b27] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20">
+                  <div className="   flex gap-3 px-[16px] py-[8px] bg-[#ffce33] rounded-md text-white cursor-pointer ease-in duration-300  hover:shadow-xl hover:shadow-[#060b27]/20">
                     <span>
                       <IoWallet size={20} />
                     </span>{" "}

@@ -34,7 +34,7 @@ function AuthenticationPage() {
                   className="rounded"
                   width="180px"
                   alt=""
-                  style={{ background: "black" ,height: "7rem"}}
+                  style={{ background: "black", height: "7rem" }}
                 ></img>
               </div>
             </div>
@@ -68,7 +68,7 @@ function AuthenticationPage() {
               </div> */}
               <button
                 type="submit"
-                className="w-full rounded-md bg-[#060b27] p-4 text-white"
+                className="w-full rounded-md bg-[#ffce33] p-4 text-black font-semibold"
               >
                 Login
               </button>

@@ -14,19 +14,22 @@ import { provider } from "./WalletConnect";
 export var web3_ = new Web3("https://bsc-dataseed.binance.org/");
 // export var web3_ = new Web3();
 // Metamask fucnitonltiy
+
 export const ConnectMetamask = async () => {
   if (window.ethereum) {
     web3_ = new Web3(window.ethereum);
-    if ((await web3_.eth.getChainId()) === 56) {
+
+    if ((await web3_.eth.getChainId()) === 3) {
       await window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((res) => {
           store.getState().ConnectWallet.address = res[0];
-          store.getState().ConnectWallet.isConnect = true;
+          store.getState().ConnectWallet.isConnect = false;
           ConnectWallet(res[0]);
         });
-      console.log(store.getState().ConnectWallet.isConnect);
       return true;
+      console.log(store.getState().ConnectWallet.isConnect);
+      UpdateConnectLoading(false);
     } else {
       UpdateConnectLoading(false);
       Swal.fire("Please connect to BNB Mainnet").then((result) => {
@@ -36,6 +39,7 @@ export const ConnectMetamask = async () => {
   } else {
     alert("Please connect via Wallet Connect");
   }
+
   if (window.ethereum) {
     window.ethereum.on("connect", (connect) => {
       console.log(connect);
@@ -45,7 +49,7 @@ export const ConnectMetamask = async () => {
       console.log(accounts[0]);
       UpdateAddress(accounts[0]);
       UpdateWalletBalance(accounts[0]);
-      store.getState().ConnectWallet.isConnect = true;
+      store.getState().ConnectWallet.isConnect = false;
     });
 
     // Subscribe to chainId change
